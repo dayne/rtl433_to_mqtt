@@ -1,8 +1,8 @@
 # rtl433_to_mqtt
 
-Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-sdr](https://www.rtl-sdr.com/) libraries and the [rtl_433](https://github.com/merbanan/rtl_433) tool that scans 433.9 MHz and decodes traffic from things like temperature sensors.
-
 <img align="right" width="250" src="../master/temp2rtl_433.JPG">
+
+Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-sdr](https://www.rtl-sdr.com/) libraries and the [rtl_433](https://github.com/merbanan/rtl_433) tool that scans 433.9 MHz and decodes traffic from things like temperature sensors.
 
 This script parses the JSON output from rtl_433, if the string parses as JSON it is considered a valid sensor message that is then passed on to MQTT.  This allows downstream MQTT clients to filter, log, and analyse messages.
 
