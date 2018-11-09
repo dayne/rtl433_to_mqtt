@@ -1,0 +1,4 @@
+topic: /rtl_233/status/full
+server: localhost
+port: 1883
+indb: entries
