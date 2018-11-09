@@ -13,7 +13,6 @@ mqtt = MQTT::Client.connect(
   :port => cfg['port']
 )
 
-
 begin
   PTY.spawn("rtl_433 -G -F json") do |stdout, stdin, pid|
     begin
