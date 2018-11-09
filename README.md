@@ -4,6 +4,8 @@ Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-
 
 This script parses the JSON output from rtl_433, if the string parses as JSON it is considered a valid sensor message that is then passed on to MQTT.  This allows downstream MQTT clients to filter, log, and analyse messages.
 
+![image of sensor to usb sdr to pi](/dayne/rtl433_to_mqtt/raw/master/temp2rtl_433.JPG =250x)
+
 
 ## software setup
 
