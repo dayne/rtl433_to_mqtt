@@ -9,6 +9,24 @@ This script parses the JSON output from rtl_433, if the string parses as JSON it
 
 ## software setup
 
+Install on a Raspberry Pi with Raspbian is super simple!
+
+```
+git clone https://github.com/dayne/rtl433_to_mqtt
+cd rtl433_to_mqtt/setup
+./setup.sh
+# wait a while and say yes to a few things
+sudo reboot
+```
+
+Login and you should be ready to configure and launch the collection script
+```
+cp config.yml.example config.yml
+./launch.sh
+```
+
+### The details of what that script is going to do:
+
 Install rtl-sdr libraries and drivers: _[more details](https://ranous.files.wordpress.com/2016/03/rtl-sdr4linux_quickstartv10-16.pdf)_
 
 ```
@@ -24,8 +42,4 @@ Install mosqitto MQTT server and ensure it is launched
 sudo apt install mosquitto
 ```
 
-Configure and launch the collection script
-```
-cp config.yml.example config.yml
-./launch.sh
 ```
