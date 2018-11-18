@@ -6,6 +6,12 @@ Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-
 
 This script parses the JSON output from rtl_433, if the string parses as JSON it is considered a valid sensor message that is then passed on to MQTT.  This allows downstream MQTT clients to filter, log, and analyse messages.
 
+## hardware requirements
+
+* Raspbery Pi  _$50_
+* A USB Software Defined Radio (SDR) like the [NooElec NESDR Mini USB RTL-SDR](https://www.amazon.com/NooElec-NESDR-Mini-Compatible-Packages/dp/B009U7WZCA) _$20_
+* External/Internal temp sensor that broadcasts on 433 Mhz like the [AcuRite-06002M](https://www.amazon.com/AcuRite-06002M-Wireless-Temperature-Humidity/dp/B00T0K8NXC/) _$12_
+
 
 ## software setup
 
