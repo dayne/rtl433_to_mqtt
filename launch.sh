@@ -10,7 +10,7 @@ log() {
 
 while(true); do
   log "starting rtl433_to_mqtt"
-  ./rtl433_to_mqtt.rb
+  ./rtl433_to_mqtt.rb -l
   log "rtl433_to_mqtt crashed / killed"
   echo "relaunching in 5 seconds - double check USB receiver is fully plugged in"
   sleep 5;
