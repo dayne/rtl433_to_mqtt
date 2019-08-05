@@ -13,7 +13,7 @@ This script parses the JSON output from rtl_433, if the string parses as JSON it
 ```
 cp config.yml.example config.yml
 # edit to point at your mqtt server (or leave alone for localhost)
-./launch
+./launch.sh
 ```
 
 If you want to launch in tmux: use `./tmux-launch.sh`
@@ -48,7 +48,7 @@ cp config.yml.example config.yml
 ./launch.sh
 ```
 
-### The details of what that script is going to do:
+#### The details of `setup/setup.sh`:
 
 Install rtl-sdr libraries and drivers: _[more details](https://ranous.files.wordpress.com/2016/03/rtl-sdr4linux_quickstartv10-16.pdf)_
 
@@ -65,4 +65,4 @@ Install mosqitto MQTT server and ensure it is launched
 sudo apt install mosquitto
 ```
 
-```
+Runs ruby bundler to get the script dependancies.

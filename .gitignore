@@ -2,3 +2,4 @@ Gemfile.lock
 config.yml
 launch.log
 setup/rtl_433
+*.log*
