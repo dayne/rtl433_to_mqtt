@@ -52,5 +52,12 @@ else
 fi
 
 if [ ! -f Gemfile.lock ]; then
-	bundle
+	which bundle > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		bundle
+	else
+		echo "missing ruby bundle"
+		echo "install ruby & ruby bundle and try running setup.sh again"
+		exit 1
+	fi
 fi
