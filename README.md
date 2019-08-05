@@ -6,6 +6,23 @@ Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-
 
 This script parses the JSON output from rtl_433, if the string parses as JSON it is considered a valid sensor message that is then passed on to MQTT.  This allows downstream MQTT clients to filter, log, and analyse messages.
 
+* Some sensors send triplicate messages to ensure delivery. Script drops dups.
+* Adds a current unix timestamp `ts` value to the payload.
+
+## usage
+```
+cp config.yml.example config.yml
+# edit to point at your mqtt server (or leave alone for localhost)
+./launch
+```
+
+If you want to launch in tmux: use `./tmux-launch.sh`
+
+Autolaunch on reboot?  Add the following line to your crontab: (_fix the path of course_)
+```
+@reboot /home/pi/projects/rtl433_to_mqtt/tmux-launch.sh
+```
+
 ## hardware requirements
 
 * Raspbery Pi  _$50_
