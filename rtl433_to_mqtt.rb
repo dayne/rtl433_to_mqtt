@@ -16,11 +16,13 @@ if ARGV.delete("-l")
   end
 end
 
-cfg = YAML.load_file('config.yml')
+cfg = YAML.load_file('config.yml')['rtl_433']
 
 mqtt = MQTT::Client.connect(
   :host => cfg['server'],
-  :port => cfg['port']
+  :port => cfg['port'],
+  :username => cfg['username'],
+  :password => cfg['password']
 )
 
 begin

@@ -1,4 +1,6 @@
-topic: /rtl_233/status/full
-server: localhost
-port: 1883
-indb: entries
+rtl_433:
+  topic: /rtl_233/status/full
+  server: localhost
+  port: 1883
+#  username: username
+#  password: password
