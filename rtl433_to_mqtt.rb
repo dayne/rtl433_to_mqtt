@@ -8,7 +8,7 @@ require 'yaml'
 require 'logger'
 
 if ARGV.delete("-l")
-  logger = Logger.new('rtl433.log','daily')
+  logger = Logger.new('logs/rtl433.log','daily')
   logger.formatter = proc do |sev, datetime, progname, msg|
     # sev and progname not helpful. datetime already in msg so just
     # slam the json messages in log file - one msg line
