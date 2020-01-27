@@ -8,6 +8,11 @@ log() {
   echo "`date +%Y.%m.%d-%H:%M:%S`: ${1}" >> launch.log
 }
 
+if [ ! -f config.yml ]; then
+	log "ERROR: missing config.yml"
+	exit 1
+fi
+
 while(true); do
   log "starting rtl433_to_mqtt"
   ./rtl433_to_mqtt.rb -l

@@ -2,6 +2,17 @@
 # https://serverfault.com/a/670812
 # github.com/gdbtek
 
+function have_command()
+{
+	info "checking for command: $1"
+	which $1 > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		echo "we have command: $1" && return 0
+	else
+		echo "missing command $1" && return 1
+	fi	
+}
+
 function info()
 {
     local -r message="${1}"

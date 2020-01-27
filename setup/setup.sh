@@ -3,7 +3,7 @@
 source 'apt-lib.sh'
 
 runAptGetUpdate
-installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git
+installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby
 
 function install_rtl_433() {
 if [ ! -d rtl_433 ]; then
@@ -44,20 +44,32 @@ if [ ! -f /etc/modprobe.d/blacklist-rtl.conf ]; then
 	echo "blacklist file added - you need to reboot later"
 fi
 
-which rtl_433 > /dev/null
-if [ $? -eq 1 ]; then
-	install_rtl_433
-else
+if have_command rtl_433; then
 	echo "rtl_433 detected - skipping install"
+else
+	install_rtl_433
 fi
 
 if [ ! -f Gemfile.lock ]; then
-	which bundle > /dev/null 2>&1
-	if [ $? -eq 0 ]; then
+	if have_command bundle; then
 		bundle
 	else
-		echo "missing ruby bundle"
-		echo "install ruby & ruby bundle and try running setup.sh again"
-		exit 1
+		if have_command gem; then
+			sudo gem install bundler
+			bundle
+		else
+			echo "ERROR: missing gem command needed to install bunndler"
+			exit 1
+		fi
 	fi
+fi
+
+echo "install completed"
+
+crontab -l | grep tmux-launch > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	info "tmux-launch.sh already setup in crontab"
+else
+	info 'add the following line to crontab to enable system as a tmux service'
+	echo "@reboot ${PWD}/tmux-launch.sh"
 fi
