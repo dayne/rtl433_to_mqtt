@@ -1,5 +1,5 @@
 rtl_433:
-  topic: /rtl_233/status/full
+  topic: /rtl_433/raw
   server: localhost
   port: 1883
 #  username: username
