@@ -19,14 +19,14 @@ end
 cfg = YAML.load_file('config.yml')['rtl_433']
 
 mqtt = MQTT::Client.connect(
-  :host => cfg['server'],
+  :host => cfg['host'],
   :port => cfg['port'],
   :username => cfg['username'],
   :password => cfg['password']
 )
 
 begin
-  PTY.spawn("rtl_433 -G -F json") do |stdout, stdin, pid|
+  PTY.spawn("rtl_433 -F json") do |stdout, stdin, pid|
     begin
       last_line = ""
       stdout.each do |line|
