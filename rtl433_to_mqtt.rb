@@ -16,7 +16,11 @@ if ARGV.delete("-l")
   end
 end
 
-cfg = YAML.load_file('config.yml')['rtl_433']
+if File.exists?('config.yml')
+  cfg = YAML.load_file('config.yml')['rtl_433']
+else
+  cfg = YAML.load_file('config.yml.example')['rtl_433']
+end
 
 mqtt = MQTT::Client.connect(
   :host => cfg['host'],
@@ -26,7 +30,7 @@ mqtt = MQTT::Client.connect(
 )
 
 begin
-  PTY.spawn("rtl_433 -F json") do |stdout, stdin, pid|
+  PTY.spawn("rtl_433 -F json -M UTC") do |stdout, stdin, pid|
     begin
       last_line = ""
       stdout.each do |line|
