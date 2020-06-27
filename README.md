@@ -37,9 +37,22 @@ sudo reboot
 
 Login and you should be ready to configure and launch the collection script
 ```
-cp config.yml.example config.yml
+cd rtl433_to_mqtt # location of code
 ./launch.sh
 ```
+
+Default configuration in the `config.yml.example` will have all the messages pushed to default MQTT server and topic.
+* `server: localhost`
+* `topic: /rtl_433/raw`
+
+You can watch that default flow by opening up a terminal and using `mosquitto_sub`
+to watch that local topic: 
+```
+mosquitto_sub -h localhost -t /rtl_433/raw
+```
+
+To customize the MQTT broker or topic published copy the `config.yml.example` to
+`config.yml` and change appropriately.
 
 #### The details of `setup/setup.sh`:
 
