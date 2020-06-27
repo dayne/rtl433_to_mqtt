@@ -4,31 +4,24 @@
 
 Simple ruby script to be used with a Software Defined Radio (SDR) with the [rtl-sdr](https://www.rtl-sdr.com/) libraries and the [rtl_433](https://github.com/merbanan/rtl_433) tool that scans 433.9 MHz and decodes traffic from things like temperature sensors.
 
-This script parses the JSON output from rtl_433, if the string parses as JSON it is considered a valid sensor message that is then passed on to MQTT.  This allows downstream MQTT clients to filter, log, and analyse messages.
-
-* Some sensors send triplicate messages to ensure delivery. Script drops dups.
+This tool is focused on:
+* Run the `rtl_433` command and parses the JSON formatted messages.
+* Captures messages into a log file with automatic daily log-rotation.
+* De-duplicates messages.
+  * Some sensors send triplicate messages to ensure delivery. Script drops dups.
 * Adds a current unix timestamp `ts` value to the payload.
+* Publish de-duplicated messages onto an MQTT topic.
 
-## usage
-```
-cp config.yml.example config.yml
-# edit to point at your mqtt server (or leave alone for localhost)
-./launch.sh
-```
+This allows downstream MQTT clients to subscribe to the de-duplicated feed for
+filtering, logging, and analysis.
 
-If you want to launch in tmux: use `./tmux-launch.sh`
-
-Autolaunch on reboot?  Add the following line to your crontab: (_fix the path of course_)
-```
-@reboot /home/pi/projects/rtl433_to_mqtt/tmux-launch.sh
-```
-
-## hardware requirements
-
-* Raspbery Pi  _$50_
-* A USB Software Defined Radio (SDR) like the [NooElec NESDR Mini USB RTL-SDR](https://www.amazon.com/NooElec-NESDR-Mini-Compatible-Packages/dp/B009U7WZCA) _$20_
-* External/Internal temp sensor that broadcasts on 433 Mhz like the [AcuRite-06002M](https://www.amazon.com/AcuRite-06002M-Wireless-Temperature-Humidity/dp/B00T0K8NXC/) _$12_
-
+Included tools:
+* `setup.sh` - debian/ubuntu/raspbian setup script to install needed
+  dependancies to use this.
+* `rtl433_to_mqtt.rb` - core tool that does the work
+* `launch.sh` - simple launcher for the `rtl433_to_mqtt.rb` that will
+  automatically, after 5 seconds, relaunches the tool incase it dies.
+* `tmux-launch.sh` - create a new tmux session and runs `launch.sh`
 
 ## software setup
 
@@ -36,7 +29,7 @@ Install on a Raspberry Pi with Raspbian is super simple!
 
 ```
 git clone https://github.com/dayne/rtl433_to_mqtt
-cd rtl433_to_mqtt/setup
+cd rtl433_to_mqtt
 ./setup.sh
 # wait a while and say yes to a few things
 sudo reboot
@@ -66,3 +59,29 @@ sudo apt install mosquitto
 ```
 
 Runs ruby bundler to get the script dependancies.
+
+
+
+
+
+## usage
+```
+cp config.yml.example config.yml
+# edit to point at your mqtt server (or leave alone for localhost)
+./launch.sh
+```
+
+If you want to launch in tmux: use `./tmux-launch.sh`
+
+Autolaunch on reboot?  Add the following line to your crontab: (_fix the path of course_)
+```
+@reboot /home/pi/projects/rtl433_to_mqtt/tmux-launch.sh
+```
+
+## hardware requirements
+
+* Raspbery Pi  _$50_
+* A USB Software Defined Radio (SDR) like the [NooElec NESDR Mini USB RTL-SDR](https://www.amazon.com/NooElec-NESDR-Mini-Compatible-Packages/dp/B009U7WZCA) _$20_
+* External/Internal temp sensor that broadcasts on 433 Mhz like the [AcuRite-06002M](https://www.amazon.com/AcuRite-06002M-Wireless-Temperature-Humidity/dp/B00T0K8NXC/) _$12_
+
+

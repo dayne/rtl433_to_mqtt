@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source 'apt-lib.sh'
+source 'lib/apt-lib.sh'
 
 runAptGetUpdate
 installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby
@@ -58,7 +58,7 @@ if [ ! -f Gemfile.lock ]; then
 			sudo gem install bundler
 			bundle
 		else
-			echo "ERROR: missing gem command needed to install bunndler"
+			echo "ERROR: missing gem command needed to install bundler"
 			exit 1
 		fi
 	fi
@@ -73,3 +73,5 @@ else
 	info 'add the following line to crontab to enable system as a tmux service'
 	echo "@reboot ${PWD}/tmux-launch.sh"
 fi
+
+echo "#### NOTE: If this is the first time setup you will likely need to reboot your computer."
