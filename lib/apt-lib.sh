@@ -2,6 +2,13 @@
 # https://serverfault.com/a/670812
 # github.com/gdbtek
 
+function require_root() {
+	if [ $USER != 'root' ]; then
+		info "this script requires root - please run with sudo"
+		exit 1
+	fi
+}
+
 function have_command()
 {
 	info "checking for command: $1"

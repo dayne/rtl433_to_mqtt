@@ -2,6 +2,8 @@
 
 source 'lib/apt-lib.sh'
 
+require_root
+
 runAptGetUpdate
 installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby
 
@@ -53,6 +55,11 @@ fi
 if [ ! -f Gemfile.lock ]; then
 	if have_command bundle; then
 		bundle
+    if [ $? -eq 0 ]; then
+      echo "bundle success"
+    else
+      echo "BUNDLE INSTALL FAILED"
+    fi
 	else
 		if have_command gem; then
 			sudo gem install bundler
