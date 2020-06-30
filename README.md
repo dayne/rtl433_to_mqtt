@@ -30,7 +30,7 @@ Install on a Raspberry Pi with Raspbian is super simple!
 ```
 git clone https://github.com/dayne/rtl433_to_mqtt
 cd rtl433_to_mqtt
-./setup.sh
+sudo ./setup.sh
 # wait a while and say yes to a few things
 sudo reboot
 ```
@@ -54,7 +54,7 @@ mosquitto_sub -h localhost -t /rtl_433/raw
 To customize the MQTT broker or topic published copy the `config.yml.example` to
 `config.yml` and change appropriately.
 
-#### The details of `setup/setup.sh`:
+#### The details of `setup.sh`:
 
 Install rtl-sdr libraries and drivers: _[more details](https://ranous.files.wordpress.com/2016/03/rtl-sdr4linux_quickstartv10-16.pdf)_
 
