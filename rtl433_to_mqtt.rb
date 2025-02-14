@@ -30,7 +30,7 @@ mqtt = MQTT::Client.connect(
 )
 
 begin
-  PTY.spawn("rtl_433 -F json -M UTC") do |stdout, stdin, pid|
+  PTY.spawn("rtl_433 -F json -M UTC -f #{cfg['rtl_freq']}") do |stdout, stdin, pid|
     begin
       last_line = ""
       stdout.each do |line|
