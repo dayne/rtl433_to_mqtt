@@ -41,9 +41,10 @@ cd rtl433_to_mqtt # location of code
 ./launch.sh
 ```
 
-Default configuration in the `config.yml.example` will have all the messages pushed to default MQTT server and topic.
+Default configuration in the `config.yml.example` will have all the messages pushed to default MQTT server and topic. The SDR listens on 433.92Mhz by default.
 * `server: localhost`
 * `topic: /rtl_433/raw`
+* `rtl_freq: 433920000`
 
 You can watch that default flow by opening up a terminal and using `mosquitto_sub`
 to watch that local topic: 
@@ -51,7 +52,7 @@ to watch that local topic:
 mosquitto_sub -h localhost -t /rtl_433/raw
 ```
 
-To customize the MQTT broker or topic published copy the `config.yml.example` to
+To customize the MQTT broker or topic published, or to change the frequency that the SDR listens on, copy the `config.yml.example` to
 `config.yml` and change appropriately.
 
 #### The details of `setup.sh`:
