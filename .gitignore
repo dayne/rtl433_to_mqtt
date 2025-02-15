@@ -3,3 +3,4 @@ config.yml
 launch.log
 lib/rtl_433
 *.log*
+rtl_433

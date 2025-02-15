@@ -2,10 +2,14 @@
 
 source 'lib/apt-lib.sh'
 
-require_root
-
 runAptGetUpdate
-installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby
+installAptPackages libtool libusb-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby rtl-433
+
+if [$? -eq 0 ]; then
+  echo "Tools &dependancies installed"
+else
+  echo "Failed to install apt dependancies"
+fi
 
 function install_rtl_433() {
 if [ ! -d rtl_433 ]; then
@@ -39,16 +43,22 @@ else
 	echo "rtl_433 tools installed into /usr/local/"
 fi
 popd
-}
 
 if [ ! -f /etc/modprobe.d/blacklist-rtl.conf ]; then
 	echo "blacklist dvb_usb_rtl28xxu" | sudo tee -a /etc/modprobe.d/blacklist-rtl.conf
 	echo "blacklist file added - you need to reboot later"
 fi
+}
 
 if have_command rtl_433; then
-	echo "rtl_433 detected - skipping install"
+  if [ "$1" == "--source" ]; then
+    echo "install from source requested"
+    install_rtl_433
+  else
+	  echo "rtl_433 detected - skipping install"
+  fi
 else
+  echo "rtl_433 not detected - attempting installing from source"
 	install_rtl_433
 fi
 
@@ -81,4 +91,13 @@ else
 	echo "@reboot ${PWD}/tmux-launch.sh"
 fi
 
-echo "#### NOTE: If this is the first time setup you will likely need to reboot your computer."
+
+echo "setup.sh completed";                             sleep 0.5
+echo "#### NOTE ################################### "; sleep 0.2
+echo "     If this is the first time setup you will "
+echo "     need to reboot your computer."
+echo ;                                                 sleep 0.2
+echo "     hint: Just type 'reboot' now";              sleep 0.2
+echo "############################################# "
+sleep 1
+

@@ -1,6 +1,12 @@
 #!/bin/bash
 
+# crontab entry you can use (fix the path)
 # @reboot /home/pi/rtl433_to_mqtt/tmux-launch.sh
+
+if ! command -v tmux > /dev/null; then
+  echo "Error: Missing tmux ... unable to continue"
+  echo "       Try fixing with: sudo apt install tmux" 
+fi
 
 tmux list-sessions | grep rtl2mqtt > /dev/null 2>&1
 if [ $? -eq 0 ]; then
