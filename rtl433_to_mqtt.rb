@@ -39,8 +39,21 @@ rtl_command="rtl_433 -F json -M UTC #{rtl_freq_option}"
 
 puts "Launching rtl_433 sub-process: #{rtl_command}"
 
+threads = []
+message_count = 0
+tuner_type = ""
+rtl_version = ""
+
 Open3.popen3(rtl_command) do |stdin, stdout, stderr, thread|
-  Thread.new do
+  trap("INT") do
+    puts "\nCaught Ctrl+C ... Shutting down gracefully...".green
+    puts "Processed #{message_count} messages during this run".green 
+    threads.each(&:kill)  # Kill running threads
+    thread.kill           # Kill the process thread
+    exit(0)
+  end
+
+  threads << Thread.new do
     last_line = ""
     stdout.each_line do |line|
       begin
@@ -52,13 +65,14 @@ Open3.popen3(rtl_command) do |stdin, stdout, stderr, thread|
         mqtt.publish(cfg['topic'], v.to_json)
         logger.info(v.to_json) if logger
         last_line = line
+        message_count += 1
       rescue JSON::ParserError
         puts "Unparsable: #{line}".red
       end
     end
   end
 
-  Thread.new do 
+  threads << Thread.new do 
     stderr.each_line do |line|
       puts "STDERR: #{line}".chomp.yellow
       

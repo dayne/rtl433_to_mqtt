@@ -13,13 +13,24 @@ if [ ! -d logs ]; then
   mkdir logs
 fi
 
+delay=10 
+
 while(true); do
   log "starting rtl433_to_mqtt"
   ./rtl433_to_mqtt.rb -l
-  log "rtl433_to_mqtt crashed / killed"
+  if [ $? -eq 0 ]; then
+    log "rtl433_to_mqtt exited gracefully"
+    exit 0
+  else
+    log "rtl433_to_mqtt crashed / killed ungracefully"
+  fi
   echo 
-  echo "relaunching in 30 seconds"
   echo 
   echo "  Debug hint: double check USB receiver is fully plugged in"
-  sleep 30;
+  echo "  relaunching in $delay seconds"
+  sleep $delay
+  delay=$((delay * 2))  # Double the delay after each failure
+  if [ $delay -gt 600 ]; then
+    delay=600  # Cap the delay at 10 minutes
+  fi
 done
