@@ -5,7 +5,7 @@ source 'lib/apt-lib.sh'
 require_root
 
 runAptGetUpdate
-installAptPackages libtool libusb-1.0.0-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby
+installAptPackages libtool libusb-1.0-0-dev librtlsdr-dev rtl-sdr build-essential cmake pkg-config git ruby mosquitto
 
 function install_rtl_433() {
 if [ ! -d rtl_433 ]; then

@@ -22,12 +22,26 @@ else
   cfg = YAML.load_file('config.yml.example')['rtl_433']
 end
 
+begin
 mqtt = MQTT::Client.connect(
   :host => cfg['host'],
   :port => cfg['port'],
   :username => cfg['username'],
   :password => cfg['password']
 )
+rescue Exception => error
+  puts "Error: mqtt connection to #{cfg['host']}:#{cfg['port']} failed"
+  puts "Hint: verify server is installed & running"
+  puts "      sudo apt install mosquitto-server"       # verify
+  puts "      sudo systemctl enable mosquitto-server"  # verify
+  puts "      sudo systemctl start mosquitto-server"   # verify
+  sleep 2
+  puts error
+  exit 1
+end
+
+# verify we can connect to MQTT server and warn if not.
+
 
 begin
   PTY.spawn("rtl_433 -F json -M UTC -f #{cfg['rtl_freq']}") do |stdout, stdin, pid|
