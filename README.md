@@ -98,3 +98,9 @@ Autolaunch on reboot?  Add the following line to your crontab: (_fix the path of
 * Raspbery Pi  _$50_
 * A USB Software Defined Radio (SDR) like the [NooElec NESDR Mini USB RTL-SDR](https://www.amazon.com/NooElec-NESDR-Mini-Compatible-Packages/dp/B009U7WZCA) _$20_
 * External/Internal temp sensor that broadcasts on 433 Mhz like the [AcuRite-06002M](https://www.amazon.com/AcuRite-06002M-Wireless-Temperature-Humidity/dp/B00T0K8NXC/) _$12_
+
+## TODOS / Roadmap
+
+- [ ] overhaul for integration as t3x tool
+- [ ] clean up the meta information
+- [ ] *optional* meta metrics reporter to a t3 home
