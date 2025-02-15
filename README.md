@@ -104,3 +104,5 @@ Autolaunch on reboot?  Add the following line to your crontab: (_fix the path of
 - [ ] overhaul for integration as t3x tool
 - [ ] clean up the meta information
 - [ ] *optional* meta metrics reporter to a t3 home
+- [ ] device map for model + id to custom uuid
+- [ ] homeassistant integration instructions
