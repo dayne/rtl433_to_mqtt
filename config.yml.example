@@ -4,3 +4,4 @@ rtl_433:
   port: 1883
 #  username: username
 #  password: password
+  rtl_freq: 433920000
