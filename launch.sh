@@ -17,7 +17,7 @@ delay=10
 
 while(true); do
   log "starting rtl433_to_mqtt"
-  ./rtl433_to_mqtt.rb -l
+  bundle exec ./rtl433_to_mqtt.rb -l
   if [ $? -eq 0 ]; then
     log "rtl433_to_mqtt exited gracefully"
     exit 0

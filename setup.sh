@@ -5,7 +5,7 @@ source 'lib/apt-lib.sh'
 runAptGetUpdate
 installAptPackages libtool libusb-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby rtl-433
 
-if [$? -eq 0 ]; then
+if [ $? -eq 0 ]; then
   echo "Tools &dependancies installed"
 else
   echo "Failed to install apt dependancies"
@@ -64,16 +64,23 @@ fi
 
 if [ ! -f Gemfile.lock ]; then
 	if have_command bundle; then
-		bundle
+    setup_and_run_bundle
     if [ $? -eq 0 ]; then
       echo "bundle success"
     else
       echo "BUNDLE INSTALL FAILED"
+      echo "debug and try again"
+      exit 1
     fi
 	else
 		if have_command gem; then
 			sudo gem install bundler
-			bundle
+			if bundle; then
+        echo "bundle success"
+      else
+        echo "Unabled to bundle"
+        exit 1
+      fi
 		else
 			echo "ERROR: missing gem command needed to install bundler"
 			exit 1
@@ -82,15 +89,21 @@ if [ ! -f Gemfile.lock ]; then
 fi
 
 echo "install completed"
+sleep 0.2
 
 crontab -l | grep tmux-launch > /dev/null 2>&1
 if [ $? -eq 0 ]; then
 	info "tmux-launch.sh already setup in crontab"
 else
-	info 'add the following line to crontab to enable system as a tmux service'
-	echo "@reboot ${PWD}/tmux-launch.sh"
+  echo "#### HINT ###################################"; sleep 0.2
+  echo "# Setup the following for autolaunch after  #";
+  echo "# a reboot by adding the following line to  #"; 
+  echo "# your crontab using: crontab -e            #"; sleep 0.2
+	info "  @reboot ${PWD}/tmux-launch.sh"
+  echo "#############################################"; sleep 0.2
+  echo
+  sleep 0.2
 fi
-
 
 echo "setup.sh completed";                             sleep 0.5
 echo "#### NOTE ################################### "; sleep 0.2

@@ -69,7 +69,7 @@ function runAptGetUpdate()
     if [[ "${lastAptGetUpdate}" -gt "${updateInterval}" ]]
     then
         info "apt-get update"
-        apt-get update -m
+        sudo apt-get update -m
     else
         local lastUpdate="$(date -u -d @"${lastAptGetUpdate}" +'%-Hh %-Mm %-Ss')"
 
@@ -114,4 +114,21 @@ function installAptPackages()
     echo "packages that need installing: ${packages}"
     sudo apt install ${packages}
   fi
+}
+
+function setup_and_run_bundle() 
+{
+  if ! command -v bundle > /dev/null; then 
+    echo "Error: bundle is not a command - unable to setup_and_run_bundle()"
+    exit 1
+  fi
+
+  if bundle config get path | grep "You have not configured a value" > /dev/null; then
+    echo "Warning: bundle does not have a local path set.  Fixing that"
+     bundle config set --local path "./vendor/bundle"
+  else
+    echo "Skipping path set -- detected a path set for bundler already"
+  fi
+
+  bundle install
 }

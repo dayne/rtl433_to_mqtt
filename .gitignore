@@ -4,3 +4,5 @@ launch.log
 lib/rtl_433
 *.log*
 rtl_433
+.bundle
+vendor
