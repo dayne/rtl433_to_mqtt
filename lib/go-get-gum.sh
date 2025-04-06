@@ -11,8 +11,25 @@ for arg in "$@"; do
   esac
 done
 
+# ===========
+# 🧠 Platform Detection
+# ===========
+IS_PI=false
+ARCH=$(uname -m)
+OS=$(uname -s)
+
+if grep -qi raspberry /proc/cpuinfo 2>/dev/null || [[ "$ARCH" == "arm"* || "$ARCH" == "aarch64" ]]; then
+  IS_PI=true
+fi
+
+GUM_VERSION="latest"
+if $IS_PI; then
+  GUM_VERSION="v0.12.0"
+fi
+
+
 # =============
-# 🧠 Go Install Check
+# 📦 Go Install Fallback
 # =============
 if ! command -v go &>/dev/null; then
   warn "✨ Go (golang) is not installed."
@@ -46,18 +63,19 @@ if command -v gum &>/dev/null || [ -f "$INSTALL_TARGET" ]; then
   exit 0
 fi
 
-# =============
-# 🎁 Install gum
-# =============
-info "📦 Installing gum with Go"
+# ===========
+# 🚀 Install gum
+# ===========
+echo_info "Installing gum with Go (${GUM_VERSION})"
 
 if $DRY_RUN; then
-  info "🧪 DRY RUN: Would run: go install github.com/charmbracelet/gum@latest"
-  info "🧪 DRY RUN: gum would appear at: $INSTALL_TARGET"
+  echo_info "🧪 DRY RUN: Would run:"
+  echo "    go install github.com/charmbracelet/gum@${GUM_VERSION}"
+  echo "🧪 DRY RUN: gum would land in: $INSTALL_TARGET"
   exit 0
 fi
 
-maybe_run go install github.com/charmbracelet/gum@latest
+maybe_run go install github.com/charmbracelet/gum@"$GUM_VERSION"
 
 if [ -f "$INSTALL_TARGET" ]; then
   success "✅ gum installed to: $INSTALL_TARGET"
