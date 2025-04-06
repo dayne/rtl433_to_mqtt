@@ -100,6 +100,10 @@ fi
 echo "install completed"
 sleep 0.2
 
+if [ ! -f config.yml ]; then
+  cp config.yml.example config.yml
+fi
+
 crontab -l | grep tmux-launch > /dev/null 2>&1
 if [ $? -eq 0 ]; then
 	info "tmux-launch.sh already setup in crontab"
