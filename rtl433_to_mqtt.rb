@@ -1,11 +1,18 @@
 #!/usr/bin/env ruby
 
+begin
+  require 'bundler/setup'
+rescue LoadError
+  abort "Bundler is not available. Run: gem install bundler && bundle install"
+end
+
 require 'mqtt'
 require 'json'
 require 'open3'
 require 'colored'
 require 'yaml'
 require 'logger'
+require 'colorize'
 
 if ARGV.delete("-l")
   logger = Logger.new('logs/rtl433.log','daily')

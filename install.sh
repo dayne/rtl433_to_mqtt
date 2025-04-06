@@ -74,6 +74,20 @@ main() {
     fi
   done
 
+  if ! command -v bundle &>/dev/null; then
+    echo_info "Installing bundler gem (user-local)"
+    maybe_run gem install --user-install bundler
+    export PATH="$HOME/.local/share/gem/ruby/$(ruby -e 'print RUBY_VERSION[/\d+\.\d+/]')/bin:$PATH"
+  fi
+
+  if [ -f Gemfile ]; then
+    echo_info "Installing Ruby gems locally to vendor/bundle..."
+    maybe_run bundle config set path 'vendor/bundle'
+    maybe_run bundle install
+  else
+    warn "No Gemfile found. Skipping bundler setup."
+  fi
+
   # ----------
   # Ruby Gem Check
   # ----------
