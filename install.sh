@@ -99,18 +99,36 @@ main() {
     warn "No Gemfile found. Skipping bundler setup."
   fi
 
-  # ----------
-  # Ruby Gem Check
-  # ----------
-  $DO_IT || header "💎 Checking Ruby gem: mqtt"
-  if ! gem list -i mqtt >/dev/null; then
-    warn "Ruby gem 'mqtt' not found"
-    if $DO_IT || confirm_prompt "Install Ruby gem 'mqtt'?"; then
-      maybe_run gem install mqtt
+  # ===========
+  # 💎 Ruby Gems via Bundler
+  # ===========
+
+  if [ -f Gemfile ]; then
+    header "💎 Checking Ruby gems with Bundler"
+
+    # Make sure PATH includes local gem bin dir
+    if [ -f ruby.sh ]; then
+      RUBY_PATH="$(./ruby.sh --print)"
+      export PATH="$RUBY_PATH:$PATH"
+    fi
+
+    # Check if gems are already installed
+    if bundle check --path vendor/bundle &>/dev/null; then
+      success "✅ Required gems are already installed"
+    else
+      warn "⚠️  Gems not yet installed"
+
+      if $DO_IT || confirm_prompt "Install gems locally to vendor/bundle?"; then
+        maybe_run bundle config set path 'vendor/bundle'
+        maybe_run bundle install
+      else
+        warn "Gems not installed. This may cause the app to fail later."
+      fi
     fi
   else
-    success "mqtt gem already installed"
+    warn "No Gemfile found. Skipping Bundler setup."
   fi
+
 
   # ----------
   # Config Setup
