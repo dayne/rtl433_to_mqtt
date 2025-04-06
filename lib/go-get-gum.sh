@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e
 
-# Optional: Source common.sh if you want fancy logging
+# Optional: Use common.sh for logging if available
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-[ -f "$SCRIPT_DIR/common.sh" ] && source "$SCRIPT_DIR/common.sh" "$@"
+[ -f "$SCRIPT_DIR/lib/common.sh" ] && source "$SCRIPT_DIR/lib/common.sh" "$@"
 
-# Flags
 DRY_RUN=false
 for arg in "$@"; do
   case "$arg" in
@@ -13,63 +12,34 @@ for arg in "$@"; do
   esac
 done
 
-INSTALL_DIR="/usr/local/bin"
-BINARY_NAME="gum"
-GUM_BIN="$INSTALL_DIR/$BINARY_NAME"
-REPO="https://github.com/charmbracelet/gum"
-RELEASE_URL="https://github.com/charmbracelet/gum/releases/latest/download"
+# Check for go
+if ! command -v go &>/dev/null; then
+  echo "❌ 'go' is not installed. Please install Go (https://go.dev/doc/install)."
+  exit 1
+fi
 
-# Detect system
-OS="$(uname | tr '[:upper:]' '[:lower:]')"
-ARCH="$(uname -m)"
+# Determine install path
+GOBIN="${GOBIN:-$(go env GOPATH)/bin}"
+INSTALL_TARGET="$GOBIN/gum"
 
-# Normalize ARCH names
-case "$ARCH" in
-  x86_64) ARCH="x86_64" ;;
-  arm64|aarch64) ARCH="arm64" ;;
-  *)
-    error "❌ Unsupported architecture: $ARCH"
-    exit 1
-    ;;
-esac
-
-FILENAME="gum_${OS}_${ARCH}.tar.gz"
-DOWNLOAD_URL="${RELEASE_URL}/${FILENAME}"
-
-# Install function
-install_gum() {
-  info "📦 Downloading gum for $OS/$ARCH"
-  TMPDIR=$(mktemp -d)
-  cd "$TMPDIR"
-
-  curl -sSL "$DOWNLOAD_URL" -o gum.tar.gz
-  tar -xzf gum.tar.gz
-
-  if [ -f "$BINARY_NAME" ]; then
-    info "📁 Installing gum to $INSTALL_DIR"
-    sudo mv "$BINARY_NAME" "$INSTALL_DIR/"
-    sudo chmod +x "$GUM_BIN"
-    success "✅ gum installed to $GUM_BIN"
-  else
-    error "Extracted archive didn't contain 'gum'"
-    exit 1
-  fi
-
-  cd /
-  rm -rf "$TMPDIR"
-}
-
-# Main
 if command -v gum &>/dev/null; then
-  success "✅ gum is already installed at $(command -v gum)"
+  success "✅ gum already installed at $(command -v gum)"
   exit 0
 fi
 
-info "gum not found. Installing latest release from $REPO"
-
 if [ "$DRY_RUN" = true ]; then
-  info "🧪 DRY RUN: Would fetch $DOWNLOAD_URL and install to $INSTALL_DIR"
+  info "🧪 DRY RUN: Would run 'go install github.com/charmbracelet/gum@latest'"
+  info "🧪 DRY RUN: gum would be placed in $INSTALL_TARGET"
   exit 0
+fi
+
+info "📦 Installing gum via go install"
+go install github.com/charmbracelet/gum@latest
+
+if [ -f "$INSTALL_TARGET" ]; then
+  success "✅ gum installed to $INSTALL_TARGET"
+  info "👉 Make sure \$GOBIN is in your PATH (currently: $GOBIN)"
 else
-  install_gum
+  error "❌ gum installation failed or binary not found at $INSTALL_TARGET"
+  exit 1
 fi
