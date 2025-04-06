@@ -12,7 +12,7 @@ else
 fi
 
 if [ ! -f ~/.bash.d/ruby.sh ]; then
-  cp lib/bash.d.ruby.sh $HOME/ruby.sh
+  cp lib/bash.d.ruby.sh $HOME/.bash.d/ruby.sh
 fi
 
 sudo systemctl enable mosquitto
