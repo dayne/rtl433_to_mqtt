@@ -68,7 +68,7 @@ log_kv() {
   printf "   \033[1;36m%-15s:\033[0m %s\n" "$1" "$2"
 }
 
-echo_info() {
+info() {
   echo -e "\033[1;36mℹ️  $* \033[0m"
 }
 
@@ -203,7 +203,7 @@ banner() {
 confirm_prompt() {
   local msg="${1:-Are you sure?}"
   if [ "$DRY_RUN" = true ]; then
-    echo_info "🧪 DRY RUN: Skipping prompt: $msg"
+    info "🧪 DRY RUN: Skipping prompt: $msg"
     return 0
   fi
 
@@ -217,7 +217,7 @@ confirm_prompt() {
 
 maybe_run() {
   if [ "$DRY_RUN" = true ]; then
-    echo_info "🧪 DRY RUN: $*"
+    info "🧪 DRY RUN: $*"
   else
     "$@"
   fi
