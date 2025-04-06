@@ -17,10 +17,10 @@ done
 # 📄 Config & Defaults
 # ===========
 CONFIG_FILE="config.yml"
-DEFAULT_CONFIG="mqtt:
+DEFAULT_CONFIG="rtl_433:
   host: localhost
   port: 1883
-  topic: sensors/rtl433
+  topic: /rtl_433/raw
 "
 
 # ===========
