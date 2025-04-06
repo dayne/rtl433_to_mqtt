@@ -66,10 +66,10 @@ fi
 # ===========
 # 🚀 Install gum
 # ===========
-echo_info "Installing gum with Go (${GUM_VERSION})"
+info "Installing gum with Go (${GUM_VERSION})"
 
 if $DRY_RUN; then
-  echo_info "🧪 DRY RUN: Would run:"
+  info "🧪 DRY RUN: Would run:"
   echo "    go install github.com/charmbracelet/gum@${GUM_VERSION}"
   echo "🧪 DRY RUN: gum would land in: $INSTALL_TARGET"
   exit 0
