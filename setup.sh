@@ -11,6 +11,13 @@ else
   echo "Failed to install apt dependancies"
 fi
 
+if [ ! -f ~/.bash.d/ruby.sh ]; then
+  cp lib/bash.d.ruby.sh $HOME/ruby.sh
+fi
+
+sudo systemctl enable mosquitto
+sudo systemctl start mosquitto
+
 function install_rtl_433() {
 if [ ! -d rtl_433 ]; then
 	git clone https://github.com/merbanan/rtl_433.git
@@ -50,17 +57,19 @@ if [ ! -f /etc/modprobe.d/blacklist-rtl.conf ]; then
 fi
 }
 
-if have_command rtl_433; then
-  if [ "$1" == "--source" ]; then
-    echo "install from source requested"
-    install_rtl_433
-  else
-	  echo "rtl_433 detected - skipping install"
-  fi
-else
-  echo "rtl_433 not detected - attempting installing from source"
-	install_rtl_433
-fi
+install_rtl_433
+
+#if have_command rtl_433; then
+#  if [ "$1" == "--source" ]; then
+#    echo "install from source requested"
+#    install_rtl_433
+#  else
+#	  echo "rtl_433 detected - skipping install"
+#  fi
+#else
+#  echo "rtl_433 not detected - attempting installing from source"
+#	install_rtl_433
+#fi
 
 if [ ! -f Gemfile.lock ]; then
 	if have_command bundle; then
