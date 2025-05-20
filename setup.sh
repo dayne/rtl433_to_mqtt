@@ -3,7 +3,7 @@
 source 'lib/apt-lib.sh'
 
 runAptGetUpdate
-installAptPackages libtool libusb-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto git ruby rtl-433
+installAptPackages libtool libusb-dev librtlsdr-dev rtl-sdr build-essential autoconf cmake pkg-config mosquitto mosquitto-clients git ruby rtl-433
 
 if [ $? -eq 0 ]; then
   echo "Tools &dependancies installed"
